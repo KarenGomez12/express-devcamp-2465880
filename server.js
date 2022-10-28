@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require ('dotenv')
 const colors = require ('colors')
+const listEndpoints = require('express-list-endpoints')
 
 
 //depedenias ru
@@ -19,13 +20,15 @@ dotenv.config({
 
 //1 crear el objeto app
 const app = express ()
-
+app.use(express.json())
 //ejecutar la conexcion a db
 connectDB()
 
 app.use('/api/v1/bootcamps', bootcampRoutes)
 app.use('/api/v1/users',userRoutes)
 
+
+console.log(listEndpoints(app))
 //2 Crear uan tutra dre prueba
 // app.get ('/', ( request, response)=>{
 //     response.send ('Ruta funcional')
