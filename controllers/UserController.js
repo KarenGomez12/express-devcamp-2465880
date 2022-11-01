@@ -9,10 +9,9 @@ const user = require('../models/user')
 const User = UserModel(sequelize,DataTypes)
 
 
-//get: obtener datos Read
+//get: obtener datos id
 exports.listarUsers = async (req, res)=>{
-    const user = await User.findAll();
-    
+    const user = await User.findAll(req.params.id);
     res.status(200).json(
         {
             "success":true,
@@ -22,12 +21,13 @@ exports.listarUsers = async (req, res)=>{
 }
 
 //obtener recurso por id
-exports.traerUserPorId= (req, res)=>{
-    const userId = User.findByPk(req.params.id)
+exports.traerUserPorId= async (req, res)=>{
+    const userId = await User.findByPk(req.params.id)
     res.status (200).json(
         {
-            "success": true,
-            "data": userId
+            "success":true,
+            "data":userId,
+            "message": `Aquí muestra un user cuyo id es: ${req.params.id}`
         }
     )
 }
@@ -64,10 +64,22 @@ exports.actualizarUser =async(req, res)=>{
 }
 
 //DELETE: Borrar un user 
-exports.borrarUser=(req , res)=>{
+exports.borrarUser = async(req,res)=>{
+    //buscar al usuario por id
+    const borrarUser=await User.findByPk(req.params.id)
+    //borrar usuario por id 
+    await User.destroy({
+        where: {
+            id:req.params.id
+        }
+    });
+    
+    //CONSTULTAR DATOS ELIMINADO
     res.status(200).json(
-        {
-            "message": `Aquí se va a eliminar el users ${req.params.id}`
+        {   
+            "succes" : true,
+            "data"   : borrarUser,
+            "message": `Se va a borrar el USUARIO ${req.params.id}`
         }
     )
 }
