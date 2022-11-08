@@ -24,6 +24,7 @@ app.use(express.json())
 //ejecutar la conexcion a db
 connectDB()
 
+app.use(express.json())
 app.use('/api/v1/bootcamps', bootcampRoutes)
 app.use('/api/v1/users',userRoutes)
 
