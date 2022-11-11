@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isEmail: {
           args: true,
-          msg: "Debe contener un dominio"
+          msg: "Debe contener un dominio de correo"
         } 
       },
     }, 

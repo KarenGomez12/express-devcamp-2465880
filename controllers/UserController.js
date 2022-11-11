@@ -100,7 +100,7 @@ exports.crearUser=async(req , res)=>{
 exports.actualizarUser =async(req, res)=>{
     try {
         //consultar datos actualizados
-    const updateUser= await User.findByPk(req.params.id)
+    const upUser= await User.findByPk(req.params.id)
     if(!upUser){
         //response de usuario no encontrado
         res.status (422).json(
@@ -132,7 +132,7 @@ exports.actualizarUser =async(req, res)=>{
     }    
     } catch (error) {
         res
-        .status(423)
+        .status(422)
         .json({
                 "succes":false,
                 "errors": "error de servidor"
@@ -144,20 +144,27 @@ exports.actualizarUser =async(req, res)=>{
 //DELETE: Borrar un user 
 exports.borrarUser = async(req,res)=>{
     //buscar al usuario por id
-    const borrarUser=await User.findByPk(req.params.id)
-    //borrar usuario por id 
-    await User.destroy({
-        where: {
-            id:req.params.id
-        }
-    });
-    
-    //CONSTULTAR DATOS ELIMINADO
-    res.status(200).json(
-        {   
-            "succes" : true,
-            "data"   : borrarUser,
-            "message": `Se va a borrar el USUARIO ${req.params.id}`
-        }
-    )
+    try{
+        const borrarUser=await User.findByPk(req.params.id)
+        //borrar usuario por id 
+        await User.destroy({
+            where: {
+                id:req.params.id
+            }
+        })
+        //CONSTULTAR DATOS ELIMINADO
+        res.status(200).json(
+            {   
+                "succes" : true,
+                "data"   : borrarUser,
+                "message": `Se va a borrar el USUARIO ${req.params.id}`
+            })
+    }catch(error){
+        res
+        .status(422)
+        .json({
+                "succes":false,
+                "errors": "error de servidor"
+            })
+    } 
 }

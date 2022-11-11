@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class courses extends Model {
+  class Courses extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,15 +13,105 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  courses.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    weeks: DataTypes.INTEGER,
-    enroll_cost: DataTypes.FLOAT,
-    minimum_skill: DataTypes.STRING
+  Courses.init({
+    title: {
+      type:DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isAlpha:{
+          args: true,
+          msg: ' son letras'
+        },
+        notEmpty:{
+          args: true,
+          msg: ' no envie capos vacios'
+        },
+        notNull: {
+          args: true,
+          msg: ' no tiene el name'
+        },
+      }
+    },
+      
+    description:{
+      type:DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      
+      validate: {
+        isAlpha:{
+          args: true,
+          msg: 'solo son letras'
+        },
+        notEmpty:{
+          args: true,
+          msg: ' no envie capos vacios'
+        },
+        notNull: {
+          args: true,
+          msg: ' no tiene el name'
+        },
+      }
+    
+    } ,
+    weeks:{
+      type:DataTypes.INTEGER,
+      validate: {
+        isNumeric:{
+          args: true,
+          msg: 'Solo permite numeros'
+        },
+      }
+    },
+
+    enroll_cost:{
+      type:DataTypes.REAL,
+      validate: {
+        isNumeric:{
+          args: true,
+          msg: 'Solo permite numeros'
+        },
+      }
+    },
+    
+    minimum_skill:{
+      type:DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty:{
+          args: true,
+          msg: ' no envie capos vacios'
+        },
+        notNull: {
+          args: true,
+          msg: ' no tiene nada'
+        },
+      }
+    }, 
+    bootcamp_id: {
+      type:DataTypes.STRING,
+      allowNull: false,
+      unique: true,validate: {
+        isNumeric:{
+          args: true,
+          msg: 'Solo permite numeros'
+        },
+        notEmpty:{
+          args: true,
+          msg: ' no envie capos vacios'
+        },
+        notEmpty:{
+          args: true,
+          msg: ' no envie capos vacios'
+        },
+      }
+    }, 
   }, {
     sequelize,
-    modelName: 'courses',
+    modelName: 'Courses',
+    timestamps: false
   });
-  return courses;
+  return Courses;
 };
